@@ -49,6 +49,25 @@ namespace LoggingKata.Test
             //Assert
             Assert.Equal(expected.ToString(), actual.Location.Latitude.ToString());
         }
-
+        //[Theory]
+        //[InlineData("34.073638, -84.677017, Taco Bell Acwort...", !null)]
+        //[InlineData("34.073638, Taco Bell Acwort...", null)]
+        //public void CanFinishParse(string line)
+        //{
+        //    //Arrange
+        //    var testProgramLogFailures = new TacoParser();
+        //    //Act
+        //    ITrackable actual;
+        //    try
+        //    {
+        //        actual = testProgramLogFailures.Parse(line);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine($"Unable to parse");
+        //    }
+        //    //Assert
+        //    Assert.actual.ToString();
+        //}
     }
 }
