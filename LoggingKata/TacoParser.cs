@@ -11,7 +11,7 @@ namespace LoggingKata
     {
         readonly ILog logger = new TacoLogger();
         
-        public ITrackable Parse(string line) //converts string into an ITrackable (TacoBell) - HF
+        public ITrackable Parse(string line) //Converts string into an ITrackable (TacoBell)
         {
             logger.LogInfo("Begin parsing");
 
@@ -22,16 +22,12 @@ namespace LoggingKata
             if (cells.Length < 3)
             {
                 logger.LogError($"Had less than 3 cells: {line}");
-                //Log that and return null
-                //Do not fail if one record parsing fails, return null
                 return null;
             }
 
-            //Grabs the latitude from array at index 0
+            //Generate variables for latitude, longitude, and the store name
             var latitude = double.Parse(cells[0]);
-            //Grabs the longitude from array at index 1
             var longitude = double.Parse(cells[1]);
-            //Grabs the name from array at index 2
             var storeName = cells[2];
 
             //Creates new instance of the TacoBell Class

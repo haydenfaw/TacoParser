@@ -10,10 +10,8 @@ namespace LoggingKata.Test
         {
             //Arrange
             var tacoParser = new TacoParser();
-
             //Act
             var actual = tacoParser.Parse("34.073638, -84.677017, Taco Bell Acwort...");
-
             //Assert
             Assert.NotNull(actual);
         }
