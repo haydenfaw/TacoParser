@@ -17,6 +17,7 @@ namespace LoggingKata
         //const string csvPath = "TestingLocationsFailures4.csv";
         static void Main(string[] args)
         {
+            //Should be for cleanup
             // TODO:  Find the two Taco Bells that are the furthest from one another.
             // HINT:  You'll need two nested forloops ---------------------------
 
