@@ -8,11 +8,11 @@ namespace LoggingKata
     class Program
     {
         static readonly ILog logger = new TacoLogger();
-        const string csvPath = "TacoBell-US-AL.csv";
+        //const string csvPath = "TacoBell-US-AL.csv";
         //Testing Functionality
         //const string csvPath = "TestingLocations.csv";
         //const string csvPath = "TestingLocationsFailures.csv";
-        //const string csvPath = "TestingLocationsFailures2.csv";
+        const string csvPath = "TestingLocationsFailures2.csv";
         //const string csvPath = "TestingLocationsFailures3.csv";
         //const string csvPath = "TestingLocationsFailures4.csv";
         static void Main(string[] args)
@@ -26,25 +26,20 @@ namespace LoggingKata
             // Log and error if you get 0 lines and a warning if you get 1 line
             var lines = File.ReadAllLines(csvPath);
             var didnotbreak = 0;
-            try
+            
+            if (lines.Count() < 3)
             {
-                if (lines.Count() < 3)
+                if (lines.Count() == 0)
                 {
-                    if (lines.Count() == 0)
-                    {
-                        logger.LogFatal($"There were 0 lines grabbed. The program will not work correctly and will now terminate.");
-                        didnotbreak = 1;
-                    }
-                    if (lines.Count() == 1)
-                    {
-                        logger.LogWarning($"There was only 1 line grabbed. The program will not work correctly and will now terminate.");
-                        didnotbreak = 1;
-                    }
+                    logger.LogFatal($"There were 0 lines grabbed. The program will not work correctly and will now terminate.");
+                    didnotbreak = 1;
                 }
-            }
-            catch (Exception e)
-            {
-            }
+                if (lines.Count() == 1)
+                {
+                    logger.LogWarning($"There was only 1 line grabbed. The program will not work correctly and will now terminate.");
+                    didnotbreak = 1;
+                }
+            }//stopped here
             if (didnotbreak == 0 && lines.Count() >= 2)
             { 
                 //wasDONE? -- Create a new instance of your TacoParser class
@@ -53,7 +48,7 @@ namespace LoggingKata
                 //wasDONE? -- Grab an IEnumerable of locations using the Select command: var locations = lines.Select(parser.Parse);
                 var locations = lines.Select(parser.Parse).ToArray();
                 locations = locations.Where(x => x != null).ToArray();
-                // DON'T FORGET TO LOG YOUR STEPS
+        // DON'T FORGET TO LOG YOUR STEPS
 
                 // Now that your Parse method is completed, START BELOW ----------
 
@@ -92,7 +87,7 @@ namespace LoggingKata
                 if (finalLocA != null && finalLocB != null)
                 {
                     Console.WriteLine($"=================================================================");
-                    Console.WriteLine($"The farthest two tacobells are: {finalLocA.Name} and {finalLocB.Name} with the distance of {distance}");
+                    Console.WriteLine($"The farthest two tacobells are: {finalLocA.Name} and {finalLocB.Name} with the distance of {Math.Round(distance * 0.00062)} miles.");
                 }
                 if (finalLocA == null || finalLocB == null)
                 {
