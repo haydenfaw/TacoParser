@@ -29,13 +29,14 @@ namespace LoggingKata
             var locations = lines.Select(parser.Parse).ToArray();
             locations = locations.Where(x => x != null).ToArray();
 
+            //If less than 2 locations exist in csv to calculate distance between, logs fatal error and terminates program
             if (locations.Where(x => x != null).Count() < 2) 
             {
                 logger.LogFatal("There were less than 2 locations found. Terminating program");
                 return;
             }
 
-            //Create two Itrackable variables to store two taco bell locations that are the farthest from each other, and a double distance for their distance
+            //Create Itrackable variables to store two taco bell locations that are the farthest from each other, and a double distance for their distance
             ITrackable locA = null;
             ITrackable locB = null;
             double distance = 0;
