@@ -11,46 +11,32 @@ namespace LoggingKata
     {
         readonly ILog logger = new TacoLogger();
         
-        public ITrackable Parse(string line) //converts string into an ITrackable (TacoBell) - HF
+        public ITrackable Parse(string line) //Converts string into an ITrackable (TacoBell)
         {
             logger.LogInfo("Begin parsing");
 
-            //DONE -- Take your line and use line.Split(',') to split it up into an array of strings, separated by the char ','
+            //Takes line and use line.Split(',') to split it up into an array of strings, separated by the char ','
             var cells = line.Split(',');
 
-            // If your array.Length is less than 3, something went wrong
+            //If your array.Length is less than 3, something went wrong
             if (cells.Length < 3)
             {
-                //logger.LogInfo($"Had less than 3 cells: {line}");
                 logger.LogError($"Had less than 3 cells: {line}");
-                // Log that and return null
-                // Do not fail if one record parsing fails, return null
-                return null; // TODO Implement
+                return null;
             }
-            //cells = cells.Where(x => x !=null).ToArray();
 
-            //DONE -- grab the latitude from your array at index 0
+            //Generate variables for latitude, longitude, and the store name
             var latitude = double.Parse(cells[0]);
-            //DONE -- grab the longitude from your array at index 1
             var longitude = double.Parse(cells[1]);
-            //DONE -- grab the name from your array at index 2
             var storeName = cells[2];
-            //DONE -- Your going to need to parse your string as a `double`
-            //DONE -- which is similar to parsing a string as an `int`
 
-            //DONE -- You'll need to create a TacoBell class
-            //DONE -- that conforms to ITrackable
-
-            //DONE -- Then, you'll need an instance of the TacoBell class
-            //DONE -- With the name and point set correctly
+            //Creates new instance of the TacoBell Class
             var tacoBell = new TacoBell();
+            //Stores name and location for said instance of the TacoBell Class
             tacoBell.Name = storeName;
             tacoBell.Location = new Point { Longitude = longitude, Latitude = latitude };
 
-            //DONE -- Then, return the instance of your TacoBell class
-            //DONE -- Since it conforms to ITrackable
             return tacoBell;
-            //return null;
         }
     }
 }

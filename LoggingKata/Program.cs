@@ -17,29 +17,30 @@ namespace LoggingKata
         //const string csvPath = "TestingLocationsFailures4.csv";
         static void Main(string[] args)
         {
-            // TODO:  Find the two Taco Bells that are the furthest from one another.
-            // HINT:  You'll need two nested forloops ---------------------------
-
             logger.LogInfo("Log initialized");
 
-            //DONE -- use File.ReadAllLines(path) to grab all the lines from your csv file
-            // Log and error if you get 0 lines and a warning if you get 1 line
+            //Uses File.ReadAllLines(path) to grab all the lines from your csv file            
             var lines = File.ReadAllLines(csvPath);
             var didnotbreak = 0;
-            
-            if (lines.Count() < 3)
+            try
             {
-                if (lines.Count() == 0)
+                if (lines.Count() < 3)
                 {
-                    logger.LogFatal($"There were 0 lines grabbed. The program will not work correctly and will now terminate.");
-                    didnotbreak = 1;
+                    if (lines.Count() == 0)
+                    {
+                        logger.LogFatal($"There were 0 lines grabbed. The program will not work correctly and will now terminate.");
+                        didnotbreak = 1;
+                    }
+                    if (lines.Count() == 1)
+                    {
+                        logger.LogWarning($"There was only 1 line grabbed. The program will not work correctly and will now terminate.");
+                        didnotbreak = 1;
+                    }
                 }
-                if (lines.Count() == 1)
-                {
-                    logger.LogWarning($"There was only 1 line grabbed. The program will not work correctly and will now terminate.");
-                    didnotbreak = 1;
-                }
-            }//stopped here
+            }
+            catch (Exception e)
+            {
+            }
             if (didnotbreak == 0 && lines.Count() >= 2)
             { 
                 //wasDONE? -- Create a new instance of your TacoParser class
@@ -48,33 +49,33 @@ namespace LoggingKata
                 //wasDONE? -- Grab an IEnumerable of locations using the Select command: var locations = lines.Select(parser.Parse);
                 var locations = lines.Select(parser.Parse).ToArray();
                 locations = locations.Where(x => x != null).ToArray();
-        // DON'T FORGET TO LOG YOUR STEPS
+                // DON'T FORGET TO LOG YOUR STEPS
 
-                // Now that your Parse method is completed, START BELOW ----------
+            //If less than 2 locations exist in csv to calculate distance between, logs fatal error and terminates program
+            if (locations.Where(x => x != null).Count() < 2) 
+            {
+                logger.LogFatal("There were less than 2 locations found. Terminating program");
+                return;
+            }
 
-                //DONE -- TODO: Create two `ITrackable` variables with initial values of `null`. These will be used to store your two taco bells that are the farthest from each other.
-                //DONE -- Create a `double` variable to store the distance
-                ITrackable locA = null;
-                ITrackable locB = null;
-                double distance = 0;
-                ITrackable finalLocA = null;
-                ITrackable finalLocB = null;
-                //wasDONE? -- Include the Geolocation toolbox, so you can compare locations: `using GeoCoordinatePortable;`
+            //Create Itrackable variables to store two taco bell locations that are the farthest from each other, and a double distance for their distance
+            ITrackable locA = null;
+            ITrackable locB = null;
+            double distance = 0;
+            ITrackable finalLocA = null;
+            ITrackable finalLocB = null;
 
-                for (int i = 0; i < locations.Length; i++) //(int i=0; i<lines.Length; i++)
+            //Double loop to find the two farthest locations from each other
+            for (int i = 0; i < locations.Length; i++)
+            {
+                locA = locations[i];
+                var corA = new GeoCoordinate(locA.Location.Latitude, locA.Location.Longitude);
+
+                for (int j = 0; j < locations.Length; j++)
                 {
-                    locA = locations[i];
-                    //double[] corA = {locA.Location.Latitude, locA.Location.Longitude };
-                    var corA = new GeoCoordinate(locA.Location.Latitude, locA.Location.Longitude);
-
-                    for (int j = 0; j < locations.Length; j++) //(int j=0; j<lines.Length; j++)
-                    {
-                        locB = locations[j];
-                        //double[] corB = {locB.Location.Latitude, locB.Location.Longitude};
-                        var corB = new GeoCoordinate(locB.Location.Latitude, locB.Location.Longitude);
-
-                        double possibleNewDistance = corA.GetDistanceTo(corB);
-                        //var distanceBetween = corA.GetDistanceTo(corB); //GetDistanceTo(corA, corB);
+                    locB = locations[j];
+                    var corB = new GeoCoordinate(locB.Location.Latitude, locB.Location.Longitude);
+                    double possibleNewDistance = corA.GetDistanceTo(corB);
 
                         if (possibleNewDistance > distance)
                         {
@@ -87,7 +88,7 @@ namespace LoggingKata
                 if (finalLocA != null && finalLocB != null)
                 {
                     Console.WriteLine($"=================================================================");
-                    Console.WriteLine($"The farthest two tacobells are: {finalLocA.Name} and {finalLocB.Name} with the distance of {Math.Round(distance * 0.00062)} miles.");
+                    Console.WriteLine($"The farthest two tacobells are: {finalLocA.Name} and {finalLocB.Name} with the distance of {distance}");
                 }
                 if (finalLocA == null || finalLocB == null)
                 {
