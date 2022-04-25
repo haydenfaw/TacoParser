@@ -10,7 +10,7 @@ namespace LoggingKata
     public class TacoParser
     {
         readonly ILog logger = new TacoLogger();
-        
+
         public ITrackable Parse(string line) //Converts string into an ITrackable (TacoBell)
         {
             logger.LogInfo("Begin parsing");
